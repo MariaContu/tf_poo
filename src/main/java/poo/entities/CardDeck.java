@@ -1,4 +1,5 @@
-//VER METODOS SE SAO UTEIS
+//ok
+
 package poo.entities;
 
 import poo.entities.TiposPokemons.PokemonAgua;
@@ -7,13 +8,14 @@ import poo.entities.TiposPokemons.PokemonFogo;
 import poo.entities.TiposPokemons.PokemonPedra;
 import poo.entities.TiposPokemons.PokemonPlanta;
 import poo.entities.enums.Raridade;
-import poo.entities.enums.Elementos;
 
 import java.util.*;
 
 public class CardDeck {
     public static final int NCARDS = 34;
     private List<Card> baralho = new ArrayList<>(NCARDS);
+
+    private ArrayList<Card> deque = new ArrayList<>();
     private List<GameListener> observers;
 
     public CardDeck() {
@@ -23,7 +25,7 @@ public class CardDeck {
     }
 
     public List<Card> getBaralho() {
-        return Collections.unmodifiableList(baralho);
+        return baralho;
     }
 
 
@@ -82,5 +84,22 @@ public class CardDeck {
         //embaralhar cartas
         Collections.shuffle(baralho);
     }
+
+    public List<Card> criaDeque()   {
+        for (int i=0; i<20; i++)
+            deque.add(baralho.get(i));
+        return deque;
+    }
+
+    public List<Card> getDeque() {
+        return deque;
+    }
+
+    public Card retiraCartadoDeque()    {
+        Card cartaRetirada = deque.get(deque.size()-1);
+        deque.remove(deque.size()-1);
+        return cartaRetirada;
+    }
+
 
 }

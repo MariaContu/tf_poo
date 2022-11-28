@@ -1,4 +1,4 @@
-//PRONTA
+//VER
 
 package poo.entities;
 

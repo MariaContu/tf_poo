@@ -1,4 +1,4 @@
-//PRONTA
+//ver
 
 package poo.entities;
 
@@ -13,7 +13,7 @@ public class CardView extends Button implements PropertyChangeListener{
     private CardViewListener observer;
 
     public CardView(Card aCard) {
-        super("", ImageFactory.getInstance().createImage("imgBck"));
+        super("", ImageFactory.getInstance().criaImagem("imgBck"));
 
         card = aCard;
         card.addPropertyChangeListener(this);
