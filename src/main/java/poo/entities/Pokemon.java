@@ -1,4 +1,6 @@
-package poo.entities.;
+//PRONTA
+
+package poo.entities;
 
 
 import poo.entities.enums.Elementos;
@@ -10,8 +12,8 @@ public abstract class Pokemon extends Card{
     private Raridade raridade;
     private Elementos elemento;
 
-    public Pokemon(String nome, Raridade raridade, Elementos elemento) {
-        super(nome);
+    public Pokemon(String imgId, String nome, Raridade raridade, Elementos elemento) {
+        super(imgId, nome);
         this.raridade = raridade;
         this.elemento = elemento;
         setVida();
