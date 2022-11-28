@@ -39,7 +39,7 @@ public class CardDeck {
         baralho.add(new PokemonAgua("3", "Tapu Fini",Raridade.COMUM));
         baralho.add(new PokemonAgua("4", "Blastoise",Raridade.RARO));
         baralho.add(new PokemonAgua("5", "Glaceon",Raridade.RARO));
-        baralho.add(new PokemonAgua("6","BlastoiseVMax", Raridade.LENDARIO));
+        baralho.add(new PokemonAgua("6","Vaporeon", Raridade.LENDARIO));
 
         //todos os pokemons tipo ar: 5comum 3raro 1lendario
         baralho.add(new PokemonAr("7", "Pidgey",Raridade.COMUM));
