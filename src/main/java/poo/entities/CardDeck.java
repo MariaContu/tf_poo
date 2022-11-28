@@ -63,7 +63,7 @@ public class CardDeck {
         baralho.add(new PokemonPedra("21", "Sudowoodo",Raridade.COMUM));
         baralho.add(new PokemonPedra("22", "Golem",Raridade.RARO));
         baralho.add(new PokemonPedra("23", "Graveler",Raridade.RARO));
-        baralho.add(new PokemonPedra("24", "Regirock",Raridade.LENDARIO));
+        baralho.add(new PokemonPedra("24", "Melmetal",Raridade.LENDARIO));
 
         //todos os pokemons tipo planta: 5comum 3raro 1lendario
         baralho.add(new PokemonPlanta("25", "Wimpod", Raridade.COMUM));
