@@ -4,13 +4,17 @@ package poo.entities;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Game {
 	private static Game game = new Game();
-	private int ptsJ1, ptsJ2;
-	private CardDeck deckJ1, deckJ2;
-	private int player;
-	private int jogadas;
+
+	Jogador p1, p2;
+	Jogador vencedor;
+
+	private int turnos;
+
+	Scanner in = new Scanner(System.in);
 	private List<GameListener> observers;
 	
 	public static Game getInstance() {
@@ -18,38 +22,126 @@ public class Game {
 	}
 
 	private Game() {
-		ptsJ1 = 0;
-		ptsJ2 = 0;
-		deckJ1 = new CardDeck();
-		deckJ2 = new CardDeck();
-		player = 1;
-		jogadas = CardDeck.NCARDS;
+		p1 = new Jogador("Player 1");
+		p2 = new Jogador("Player 2");
+		vencedor = null;
+		turnos=0;
 		observers = new LinkedList<>();
 	}
 
-	private void nextPlayer() {
-		player++;
-		if (player == 4) {
-			player = 1;
+	public void decidePrimeiroJogador() {
+		int turnos = (int)Math.round(Math.random());
+	}
+
+	private boolean morto(Jogador jogador) {
+		return jogador.getPokemonVivos()<=0;
+	}
+
+	public boolean checkVencedor() {
+		if (morto(p1)) {
+			vencedor = p2;
+			return true;
 		}
+		if (morto(p2)) {
+			vencedor = p1;
+			return true;
+		}
+		return false;
 	}
 
-	public int getPtsJ1() {
-		return ptsJ1;
+	public Jogador jogadorAtual() {
+		if (turnos%2==0) return p1;
+		return p2;
 	}
 
-	public int getPtsJ2() {
-		return ptsJ2;
+	public void primeiroTurno(Jogador jogador) {
+		System.out.println("--------Começo do Turno--------");
+		System.out.println(jogador.getNome());
+		System.out.println("Mão: \n" + jogador.getMao());
+		for (int i=0;i<5;i++) {
+			System.out.println("Escolha um pokemon para reserva");
+			String escolha = in.nextLine();
+			jogador.addPokeNaReserva(escolha);
+			System.out.println("Deseja colocar outro? (s/n)");
+			escolha = in.nextLine();
+			if (escolha.equals("n")) break;
+		}
+		System.out.println("Escolha um pokemon principal");
+		System.out.println("Reserva: \n" + jogador.getReserva());
+		String escolha = in.nextLine();
+		jogador.trocaPokeAtivo(escolha);
+		System.out.println("Fim do turno");
+		turnos++;
 	}
 
-	public CardDeck getDeckJ1() {
-		return deckJ1;
+	public void turno(Jogador jogador) {
+		System.out.println("--------Começo do Turno--------");
+		System.out.println(jogador.getNome());
+		if (jogador.getPokemonAtivo()==null) {
+			System.out.println("Escolha um novo pokemon ativo");
+			System.out.println("Reserva: \n" + jogador.getReserva());
+			in.nextLine();
+			jogador.trocaAtivoMorto(in.nextLine());
+		}
+		boolean repeat = true;
+		while (repeat) {
+			System.out.println("Mão: \n" + jogador.getMao());
+			System.out.println("Reserva: \n" + jogador.getReserva());
+			System.out.println("Pokemon Ativo: \n" + jogador.pokemonAtivoString());
+			System.out.println("Pilha: \n" + jogador.getPilha());
+			System.out.println("Escolha uma ação: ");
+			System.out.println("1 - Trocar Pokemon Ativo");
+			System.out.println("2 - Colocar pokemon na reserva");
+			System.out.println("3 - Trocar Pokemon da reserva");
+			System.out.println("4 - Usar carta de Treinador");
+			System.out.println("5 - Avançar");
+			int opção = in.nextInt();
+			switch (opção) {
+				case 1:
+					System.out.println("Escolha o pokemon ativo");
+					jogador.trocaPokeAtivo(in.nextLine());
+					break;
+				case 2:
+					System.out.println("Escolha o pokemon para reserva");
+					jogador.addPokeNaReserva(in.nextLine());
+					break;
+				case 3:
+					System.out.println("Escolha o pokemon para trocar");
+					String name = in.nextLine();
+					System.out.println("Escolha o pokemon para reserva");
+					jogador.trocaPokeNaReserva(name, in.nextLine());
+					break;
+				case 4:
+					System.out.println("Escolha a carta de treinador");
+					jogador.usarTreinador(in.nextLine());
+					break;
+				case 5: repeat = false;
+			}
+		}
+		System.out.println("Escolha uma ação: ");
+		System.out.println("1 - Atacar inimigo");
+		System.out.println("2 - Comprar uma carta");
+		int opção = in.nextInt();
+		if (opção==1) jogador.atacar(jogador.getInimigo());
+		else jogador.comprarCarta();
+		System.out.println("Fim do turno");
+		turnos++;
 	}
 
-	public CardDeck getDeckJ2() {
-		return deckJ2;
+	public void jogar () {
+		primeiroTurno(jogadorAtual());
+		primeiroTurno(jogadorAtual());
+		while(!checkVencedor()) {
+			turno(jogadorAtual());
+		}
+		System.out.println("Vencedor: " + vencedor.getNome());
 	}
 
+	public void reiniciarJogo()	{
+		new Game();
+	}
+
+	/*
 	public void play(CardDeck deckAcionado) {
 		GameEvent gameEvent = null;
 		if (player == 3) {
@@ -112,8 +204,11 @@ public class Game {
 		deckJ2.removeSel();
 		nextPlayer();
 	}
-	
+	*/
+
 	public void addGameListener(GameListener listener) {
 		observers.add(listener);
 	}
+
+
 }
